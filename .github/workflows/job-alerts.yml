@@ -25,10 +25,11 @@ jobs:
 
       - name: Run job alert script
         env:
-          ADZUNA_APP_ID: ${{ secrets.de7bef83}}
-          ADZUNA_APP_KEY: ${{ secrets.e5d44ba86021d3f47873d4f635ca1005 }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.8661657369:AAEFWGEfErxbmxTOpCzDjZpPGeGszMDZKPw }}
-          TELEGRAM_CHAT_ID: ${{ secrets.NISHLABJobAlertsbot }}
+         env:
+          ADZUNA_APP_ID: ${{ secrets.ADZUNA_APP_ID }}
+          ADZUNA_APP_KEY: ${{ secrets.ADZUNA_APP_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python job_alert.py
 
       - name: Save updated seen-jobs list
