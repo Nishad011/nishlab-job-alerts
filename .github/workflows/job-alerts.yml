@@ -1,0 +1,40 @@
+name: NISHLAB Job Alerts
+
+on:
+  schedule:
+    - cron: "30 4 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  send-job-alerts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run job alert script
+        env:
+          ADZUNA_APP_ID: ${{ secrets.de7bef83}}
+          ADZUNA_APP_KEY: ${{ secrets.e5d44ba86021d3f47873d4f635ca1005 }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.8661657369:AAEFWGEfErxbmxTOpCzDjZpPGeGszMDZKPw }}
+          TELEGRAM_CHAT_ID: ${{ secrets.NISHLABJobAlertsbot }}
+        run: python job_alert.py
+
+      - name: Save updated seen-jobs list
+        run: |
+          git config user.name "nishlab-job-bot"
+          git config user.email "bot@nishlabcreations.online"
+          git add seen_jobs.json
+          git diff --staged --quiet || git commit -m "Update seen jobs list"
+          git push
